@@ -1,1 +1,1 @@
-[okak]("preview%20video/video-result.gif")
+![okak]("preview%20video/video-result.gif")
