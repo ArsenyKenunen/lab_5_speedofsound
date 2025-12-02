@@ -1,1 +1,3 @@
-<iframe src="https://shattereddisk.github.io/rickroll/rickroll.mp4" width="560" height="315" frameborder="0" allowfullscreen></iframe>
+<video controls width="720">
+  <source src="https://shattereddisk.github.io/rickroll/rickroll.mp4" type="video/mp4" />
+</video>
