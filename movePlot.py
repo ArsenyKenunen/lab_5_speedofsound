@@ -50,7 +50,7 @@ def do_the_thing(before_or_after: str):
         plt.title(f"combined graphs, experiment #{exp} [{before_or_after}]")
         plt.grid(True, alpha=.3)
         plt.xlabel("time, s")
-        plt.xlabel("peak height, relative units")
+        plt.ylabel("peak height, relative units")
         plt.savefig(f"graphs/graph-{before_or_after}-{exp}.png", dpi=600, bbox_inches='tight')
         print(f"saved {counter} out of 20", end='\b\r')
         counter += 1
