@@ -41,22 +41,87 @@ def do_the_thing(before_or_after: str):
 
         plt.scatter(
             t0, _0_values,
-            color='blue', s=1
+            color='blue', s=1, label="microphone 1"
         )
         plt.scatter(
             t1, _1_values_moved,
-            color='red', s=1
+            color='red', s=1, label="microphone 2"
         )
         plt.title(f"combined graphs, experiment #{exp} [{before_or_after}]")
         plt.grid(True, alpha=.3)
+        plt.legend()
         plt.xlabel("time, s")
-        plt.ylabel("peak height, relative units")
-        plt.savefig(f"graphs/graph-{before_or_after}-{exp}.png", dpi=600, bbox_inches='tight')
+        plt.ylabel("ADC peak height, relative units")
+        plt.savefig(f"graphs/combined-moved-{before_or_after}-{exp}.png", dpi=400, bbox_inches='tight')
         print(f"saved {counter} out of 20", end='\b\r')
         counter += 1
         plt.close()
 
-print("rendering progress:")
+
+def simple_combined_graphs(before_or_after: str):
+    global counter
+    for exp in range(1, 11):
+        plt.figure(figsize=(11, 8))
+        with open(f"{before_or_after}/{exp}/data_0.txt") as _0:
+            _0_values = np.array(_0.readlines(), dtype='float64')
+        with open(f"{before_or_after}/{exp}/data_1.txt") as _1:
+            _1_values = np.array(_1.readlines(), dtype='float64')
+
+        plt.scatter(
+            np.linspace(0, 5000/500000, len(_0_values)), _0_values,
+            color='blue', s=1, label="microphone 1"
+        )
+        plt.scatter(
+            np.linspace(0, 5000/500000, len(_1_values)), _1_values,
+            color='red', s=1, label="microphone 2"
+        )
+        plt.title(f"combined graphs, experiment #{exp} [{before_or_after}]")
+        plt.grid(True, alpha=.3)
+        plt.legend()
+        plt.xlabel("time, s")
+        plt.ylabel("ADC values")
+        plt.savefig(f"graphs/combined-{before_or_after}-{exp}.png", dpi=400, bbox_inches='tight')
+        print(f"saved {counter} out of 20", end='\b\r')
+        counter += 1
+        plt.close()
+
+
+def single_graphs(before_or_after: str, microphone: int | str):
+    global counter
+    for exp in range(1, 11):
+        plt.figure(figsize=(11, 8))
+        with open(f"{before_or_after}/{exp}/data_{int(microphone) - 1}.txt") as _0:
+            values = np.array(_0.readlines(), dtype='float64')
+
+        plt.scatter(
+            np.linspace(0, 5000/500000, len(values)), values,
+            color='blue', s=1
+        )
+        plt.title(f"microphone #{microphone} readings, experiment #{exp} [{before_or_after}]")
+        plt.grid(True, alpha=.3)
+        plt.xlabel("time, s")
+        plt.ylabel("ADC values")
+        plt.savefig(f"graphs/single-{before_or_after}-{exp}-{microphone}.png", dpi=400, bbox_inches='tight')
+        print(f"saved {counter} out of 40", end='\b\r')
+        counter += 1
+        plt.close()
+
+
+print("rendering progress [the-thing]:")
 do_the_thing("before")
 do_the_thing("after")
-print("\n")
+print('\n')
+
+counter = 1
+print("rendering progress [simple-combined-graphs]:")
+simple_combined_graphs("before")
+simple_combined_graphs("after")
+print('\n')
+
+counter = 1
+print("rendering progress [single-graphs]:")
+single_graphs("before", 1)
+single_graphs("before", 2)
+single_graphs("after", 1)
+single_graphs("after", 2)
+print('\n')
